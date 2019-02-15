@@ -71,11 +71,11 @@ while True:
         json_body[0]['fields']['exception'] = True
         json_body[0]['fields']['exception_type'] = "ReadTimeout"
     else:
+        pingTime = t.clock()
         json_body[0]['fields']['status_code'] = r.status_code
+        json_body[0]['fields']['ping_time'] = pingTime
         if r.status_code == requests.codes.ok:  # Status = 200
-            pingTime = t.clock()
             json_body[0]['fields']['success'] = True
-            json_body[0]['fields']['ping_time'] = pingTime
             print( "ping to", ping_url, "OK")
             print(f"Duration: {pingTime} s")
         else:

@@ -92,5 +92,6 @@ while True:
             print( "ping to", ping_url, "failed with HTTP status code ", r.status_code)
     finally:
         client.write_points(json_body)
+
     time.sleep(10)
 

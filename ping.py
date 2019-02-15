@@ -61,28 +61,18 @@ while True:
     except requests.exceptions.ConnectTimeout as err:
         json_body[0]['fields']['exception'] = True
         json_body[0]['fields']['exception_type'] = 'ConnectTimeout'
-#        json_body[0]['fields']['exception_type'] = type(err)
-        print("Timout error")
-        print(type(err))
     except requests.exceptions.ConnectionError as err:
         json_body[0]['fields']['exception'] = True
-        json_body[0]['fields']['exception_type'] = "Connection error"
-        print("Connection error")
-        print(type(err))
+        json_body[0]['fields']['exception_type'] = "ConnectionError"
     except requests.exceptions.TooManyRedirects as err:
         json_body[0]['fields']['exception'] = True
-        json_body[0]['fields']['exception_type'] = type(err)
-        print("TooManyRedirects error")
-        print(type(err))
+        json_body[0]['fields']['exception_type'] = "TooManyRedirects"
     except requests.exceptions.ReadTimeout as err:
         json_body[0]['fields']['exception'] = True
-        json_body[0]['fields']['exception_type'] = type(err)
-        print("ReadTimeout error")
-        print(type(err))
+        json_body[0]['fields']['exception_type'] = "ReadTimeout"
     else:
         json_body[0]['fields']['status_code'] = r.status_code
-#        print(r.status_code)
-        if r.status_code == requests.codes.ok:
+        if r.status_code == requests.codes.ok:  # Status = 200
             pingTime = t.clock()
             json_body[0]['fields']['success'] = True
             json_body[0]['fields']['ping_time'] = pingTime

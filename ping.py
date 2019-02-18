@@ -60,16 +60,20 @@ while True:
         r = requests.get(ping_url, timeout= 10)
     except requests.exceptions.ConnectTimeout as err:
         json_body[0]['fields']['exception'] = True
-        json_body[0]['fields']['exception_type'] = 'ConnectTimeout'
+        json_body[0]['fields']['exception_type'] = type(err).__name__
     except requests.exceptions.ConnectionError as err:
         json_body[0]['fields']['exception'] = True
-        json_body[0]['fields']['exception_type'] = "ConnectionError"
+        json_body[0]['fields']['exception_type'] = type(err).__name__
     except requests.exceptions.TooManyRedirects as err:
         json_body[0]['fields']['exception'] = True
-        json_body[0]['fields']['exception_type'] = "TooManyRedirects"
+        json_body[0]['fields']['exception_type'] = type(err).__name__
     except requests.exceptions.ReadTimeout as err:
         json_body[0]['fields']['exception'] = True
-        json_body[0]['fields']['exception_type'] = "ReadTimeout"
+        json_body[0]['fields']['exception_type'] = type(err).__name__
+    except Exception as err:
+        json_body[0]['fields']['exception'] = True
+        json_body[0]['fields']['exception_type'] = type(err).__name__
+        print("Unknow exception: ", type(err).__name__, err.args)
     else:
         pingTime = t.clock()
         json_body[0]['fields']['status_code'] = r.status_code
@@ -79,6 +83,7 @@ while True:
             print( "ping to", ping_url, "OK")
             print(f"Duration: {pingTime} s")
         else:
+            json_body[0]['fields']['success'] = False
             print( "ping to", ping_url, "failed with HTTP status code ", r.status_code)
     finally:
         client.write_points(json_body)

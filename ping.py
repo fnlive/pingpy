@@ -57,7 +57,7 @@ while True:
     ]
     t.start()
     try:
-        r = requests.get(ping_url, timeout= 10)
+        r = requests.get(ping_url, timeout= 60)
     except requests.exceptions.ConnectTimeout as err:
         json_body[0]['fields']['exception'] = True
         json_body[0]['fields']['exception_type'] = type(err).__name__
@@ -81,7 +81,7 @@ while True:
         if r.status_code == requests.codes.ok:  # Status = 200
             json_body[0]['fields']['success'] = True
             print( "ping to", ping_url, "OK")
-            print(f"Duration: {pingTime} s")
+            print("Duration: ", pingTime, "s")
         else:
             json_body[0]['fields']['success'] = False
             print( "ping to", ping_url, "failed with HTTP status code ", r.status_code)
@@ -89,4 +89,5 @@ while True:
         client.write_points(json_body)
 
     time.sleep(10)
-
+# Or check if to use cron instead of forever-loop: https://www.jetbrains.com/help/pycharm/remote-development-on-raspberry-pi.html
+    
